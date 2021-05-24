@@ -42,6 +42,10 @@ right_img = np.ascontiguousarray(right_img, dtype=np.float32)
 preprocess = get_transform()
 left_img = preprocess(left_img)
 right_img = preprocess(right_img)
-pred,_ = model(left_img.unsqueeze(0).cuda(), right_img.unsqueeze(0).cuda()) 
-pred = pred[0].data.cpu().numpy() * 256   
+left_input = left_img.unsqueeze(0).cuda()
+right_input = right_img.unsqueeze(0).cuda()
+print(left_input.type(), left_input.shape, torch.max(left_input))
+pred = model(left_input, right_input) 
+print(pred.shape, pred)
+pred = pred[0].detach().cpu().numpy() * 256   
 skimage.io.imsave('sample_disp.png',pred.astype('uint16'))

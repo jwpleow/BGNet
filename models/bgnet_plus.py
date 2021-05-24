@@ -157,5 +157,7 @@ class BGNet_Plus(SubModule):
                               mode='bilinear',align_corners =False).squeeze(1)
         out2 = F.interpolate(half_disp * 2.0, scale_factor=(2.0, 2.0),
                                       mode='bilinear',align_corners =False).squeeze(1)
-                                            
-        return out1,out2        
+        if self.training:                          
+            return out1,out2        
+        else:
+            return out1
